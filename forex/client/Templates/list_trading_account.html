@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_trading_account' %}" class = "btn btn-success float-end"> Add  Trading Account </a>
+<h2>Account List </h2>
+
+
+<table class = "table table-striped">
+
+    <thead>
+        <tr>
+            <th>Client</th>
+            <th>Broker</th>
+            <th>Account No.</th>
+            <th>Equity</th>
+            <th>Backup Equity</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trading_account in trading_account_list %}
+        <tr>
+            <td>{{trading_account.client}}</td>
+            <td>{{trading_account.broker}}</td>
+            <td>{{trading_account.account_number}}</td>
+            <td>{{trading_account.equity}}</td>
+            <td> {{trading_account.backup_equity}}</td>
+            
+            
+            <td>
+                <a href="edit_trading_account/{{trading_account.pk}}">Edit </a>
+            </td>
+            
+            <td>
+                <a href="delete_trading_account/{{trading_account.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+{% endblock content %}

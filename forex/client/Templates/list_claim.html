@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_claim' %}" class = "btn btn-success float-end"> Add New claim </a>
+<h2>Claim List </h2>
+
+
+<table class = "table table-striped" id = "claim_table">
+
+    <thead>
+        <tr>
+            <th>Account Number</th>
+            <th>Start date</th>
+            <th>End Date</th>
+            <th>Total Profit</th>
+            <th>Our Share</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for claim in claim_list %}
+        <tr>
+            <td>{{claim.account_number}}</td>
+            <td>{{claim.start_date}}</td>
+            <td>{{claim.end_date}}</td>
+            <td>{{claim.total_profit}}</td>
+            <td>{{claim.our_share}}</td>
+            
+            <td>
+                <a href="edit_claim/{{profit_claim.pk}}">Edit </a>
+            </td>
+            
+            <td>
+                <a href="delete_claim/{{profit_claim.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div class="container mt-3">
+
+<h2> Add Profit</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit" class = "btn btn-outline-success">
+    <input type="reset" value="Reset" class = "btn btn-outline-info">
+    <a href="{% url 'list_profit' %} " class = "btn btn-outline-warning">Cancel</a>
+</form>
+ <hr class="br-danger border-2 border-top border-danger">
+
+ <h6> Entry wise data</h6>
+
+
+ 
+
+</div>
+
+
+<script>
+    $("input,select,textarea").not(':submit,:reset').each(function(){
+        $(this).addClass("form-control");
+    })
+    $('#id_entry_date').attr("type","date");
+    
+</script>
+
+{% endblock content %}

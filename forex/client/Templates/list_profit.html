@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_profit' %}" class = "btn btn-success float-end"> Add New profit </a>
+<h2>Profit List </h2>
+
+
+<table class = "table table-striped">
+
+    <thead>
+        <tr>
+            <th>Account Number</th>
+            <th>Entry Date</th>
+            <th>Profit</th>
+            <!-- <th>Mobile Number</th> -->
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profit in profit_list %}
+        <tr>
+            <td>{{profit.account_number}}</td>
+            <td>{{profit.entry_date}}</td>
+            <td>{{profit.profit}}</td>
+           
+            <td>
+                <a href="edit_profit/{{profit.pk}}">Edit </a>
+            
+            <td>
+                <a href="delete_profit/{{profit.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+{% endblock content %}

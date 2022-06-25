@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_vps' %}" class = "btn btn-success float-end"> Add New VPS </a>
+<h2>VPS List </h2>
+
+
+<table class = "table table-striped">
+
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>VPS Name</th>
+            <th>VPS Plan</th>
+            <th>Expiration</th>
+            <!-- <th>View</th> we shall add this as well  -->
+            <th>Edit</th>
+
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vps in vps_list %}
+        <tr>
+            <td>{{vps.company}}</td>
+            <td>{{vps.vps_name}}</td>
+            <td>{{vps.vps_plan}}</td>
+            <td>{{vps.expiration_date}}</td>
+            
+            <td>
+                <a href="edit_vps/{{vps.pk}}">Edit </a>
+            </td>
+            
+            <td>
+                <a href="delete_vps/{{vps.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+{% endblock content %}
