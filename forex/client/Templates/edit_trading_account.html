@@ -17,8 +17,11 @@
 </form>
 
 <script>
-    $("input,select,textarea").not(':submit,:reset').each(function(){
+    $("input,textarea").not(':submit,:reset').each(function(){
         $(this).addClass("form-control");
+    })
+    $("select").each(function(){
+        $(this).addClass("form-select")
     })
 </script>
 </div>

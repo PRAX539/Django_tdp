@@ -1,3 +1,4 @@
+from unittest.mock import DEFAULT
 from django.db import models
 from numpy import True_, true_divide
 
@@ -72,7 +73,7 @@ class account_master(models.Model):
         db_table = 'account_master'
 
     def  __str__(self):
-        return self.account_number + ' ' +self.client.first_name +' '+self.client.middle_name +' '+self.client.last_name + ' ' + self.broker
+        return self.account_number 
 
 
 class profit_details(models.Model):
@@ -112,9 +113,9 @@ class claim_settled(models.Model):
         ('USD','USD')
     ]
     claim_id = models.ForeignKey(profit_claim,on_delete=models.PROTECT)
-    claim_settled_in = models.CharField(max_length=15, choices=currency)
+    claim_settled_in = models.CharField(max_length=15, choices=currency,default='INR')
     amount = models.FloatField(blank=False, null = False)
-    
+    settlement_method = models.CharField(max_length=255, default = 'transfered')
     received_date = models.DateField()
 
     class Meta:
