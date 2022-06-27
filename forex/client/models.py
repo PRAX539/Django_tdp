@@ -72,7 +72,7 @@ class account_master(models.Model):
         db_table = 'account_master'
 
     def  __str__(self):
-        return self.account_number + '' +self.client.first_name +''+self.client.middle_name +''+self.client.last_name + '' + self.broker
+        return self.account_number + ' ' +self.client.first_name +' '+self.client.middle_name +' '+self.client.last_name + ' ' + self.broker
 
 
 class profit_details(models.Model):
@@ -84,7 +84,7 @@ class profit_details(models.Model):
         db_table = 'profit_details'
 
     def __str__(self):
-        return self.entry_date + '' + self.profit
+        return self.entry_date + ' ' + self.profit
 
 
 class profit_claim(models.Model):
@@ -92,22 +92,29 @@ class profit_claim(models.Model):
     account_number = models.ForeignKey(account_master,on_delete=models.PROTECT)
     start_date = models.DateField()
     end_date = models.DateField()
-    total_profit = models.FloatField()
-    exchange_rate = models.FloatField()
-    total_profit_in_INR = models.FloatField()
-    commission_rate = models.FloatField()
-    our_share = models.FloatField()
+    total_profit = models.FloatField(blank =True, null=True)
+    exchange_rate = models.FloatField(blank =True, null=True)
+    total_profit_in_INR = models.FloatField(blank =True, null=True)
+    commission_rate = models.FloatField(blank =True, null=True)
+    our_share_in_INR = models.FloatField(blank =True, null=True)
+    our_share = models.FloatField(blank =True, null=True)
 
     class Meta :
         db_table = 'profit_claim'
 
     def __str__(self):
-        return self.account_number + '' + self.start_date + '' + self.end_date + '' +self.total_profit + '' + self.our_share 
+        return self.account_number + ' ' + self.start_date + ' ' + self.end_date + ' ' +self.total_profit + ' ' + self.our_share 
 
 
 class claim_settled(models.Model):
+    currency = [
+        ('INR', 'INR'),
+        ('USD','USD')
+    ]
     claim_id = models.ForeignKey(profit_claim,on_delete=models.PROTECT)
-    amount = models.FloatField()
+    claim_settled_in = models.CharField(max_length=15, choices=currency)
+    amount = models.FloatField(blank=False, null = False)
+    
     received_date = models.DateField()
 
     class Meta:
