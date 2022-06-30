@@ -18,7 +18,7 @@
 
  <h6> Entry wise data</h6>
 
-
+<section class  ="profit_details" id = "profit_details"></section>
  
 
 </div>
@@ -29,6 +29,25 @@
         $(this).addClass("form-control");
     })
     $('#id_entry_date').attr("type","date");
+
+
+
+    $('#id_account_number').change(function(){
+        var account_number_id = $(this).val();
+        $.ajax({
+            url: '{% url "table_profit" %}',
+            data:{
+                'account_number_id':account_number_id
+            },
+            success:function(data){
+                $('#profit_details').html(data)
+            }
+        });
+    });
+
+    
+
+
     
     
 

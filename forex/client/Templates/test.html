@@ -1,17 +1,58 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+
+{% block content %}
+<div class="container">
+
+
+    <select name="account_number_id" id="account_number_id">
+        <option value="2">Account Number 2</option>
+        <option value="3">Account Number 3</option>
+    </select>
+    start date
+    <input type="date" name="start_date" id="start_date">
+    End date
+    <input type="date" name="end_date" id="end_date">
+
     
-   {% for date in dates %}
-    {{date}}
 
-   {% endfor %}
-</body>
-</html>
+<input type="number" name="result" id="result">
+
+
+
+<script>
+    
+    $('#end_date').change(function(){
+        var start_date = $('#start_date').val();
+        var account_number_id = $('#account_number_id').val();
+        var end_date = $(this).val();
+
+       
+        $.ajax({
+            url: '{% url "test_two" %}',
+            method:"get",
+            data:{
+                'account_number_id':account_number_id,
+                'start_date':start_date,
+                'end_date':end_date,
+                
+            },
+
+            success:function(data){
+                console.log(data);
+                if(data == "None"){
+                    $('#result').val(0)
+                }else{
+
+                $('#result').val(data)
+                }
+            }
+        });
+ 
+    
+    });
+
+</script>
+</div>
+
+{% endblock %}

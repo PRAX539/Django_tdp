@@ -1,0 +1,27 @@
+    
+     
+<table class = "table table-striped">
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Profit</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in data_filtered %}
+        <tr>
+            <td>{{data.entry_date}}</td>
+            <td>{{data.profit}}</td>
+           
+            
+           
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+    
+ 

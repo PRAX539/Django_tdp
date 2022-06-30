@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_settlement' %}" class = "btn btn-success float-end"> Add Settlement </a>
+<h2>Settlement List </h2>
+
+
+<table class = "table table-striped" id = "claim_table">
+
+    <thead>
+        <tr>
+            <th>Sr.no.</th>
+            <th>Currency</th>
+            <th>Amount</th>
+            <th>Received Date</th>
+           
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for claim in claim_settlement %}
+        <tr>
+            <td>{{claim.pk}}</td>
+            <td>{{claim.claim_settled_in}}</td>
+            <td>{{claim.amount}}</td>
+            <td>{{claim.received_date}}</td>
+            
+            <td>
+                <a href="edit_settlement/{{claim.pk}}">Edit </a>
+            </td>
+            
+            <td>
+                <a href="delete_settlement/{{claim.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+{% endblock content %}

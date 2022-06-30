@@ -73,19 +73,19 @@ class account_master(models.Model):
         db_table = 'account_master'
 
     def  __str__(self):
-        return self.account_number 
+        return self.account_number
 
 
 class profit_details(models.Model):
     account_number = models.ForeignKey(account_master,on_delete=models.PROTECT)
-    entry_date = models.DateField(unique=True)
+    entry_date = models.DateField()
     profit = models.FloatField()
 
     class Meta:
         db_table = 'profit_details'
 
     def __str__(self):
-        return self.entry_date + ' ' + self.profit
+        return self.account_number+' '+self.entry_date + ' ' + self.profit
 
 
 class profit_claim(models.Model):
@@ -104,7 +104,7 @@ class profit_claim(models.Model):
         db_table = 'profit_claim'
 
     def __str__(self):
-        return self.account_number + ' ' + self.start_date + ' ' + self.end_date + ' ' +self.total_profit + ' ' + self.our_share 
+        return f"{self.id} account number {self.account_number}"
 
 
 class claim_settled(models.Model):
@@ -115,7 +115,7 @@ class claim_settled(models.Model):
     claim_id = models.ForeignKey(profit_claim,on_delete=models.PROTECT)
     claim_settled_in = models.CharField(max_length=15, choices=currency,default='INR')
     amount = models.FloatField(blank=False, null = False)
-    settlement_method = models.CharField(max_length=255, default = 'transfered')
+    settled_account = models.CharField(max_length=255, default = 'indian')
     received_date = models.DateField()
 
     class Meta:

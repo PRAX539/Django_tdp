@@ -1,9 +1,13 @@
 import datetime
+from multiprocessing import context
+from urllib import response
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
 from datetime import date, timedelta
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+import pandas as pd
+from django.db.models import Avg, Count, Min, Sum
 
 
 
@@ -243,19 +247,80 @@ def delete_claim(request,pk):
     return render(request,'delete_client.html',context)
 
 
-def test(request):
-    current_date = datetime.date.today().isoformat
-    dates = {current_date}
-    i = 1
-    while i < 10 :
-        add_date = (date.today() - timedelta(days = i)).isoformat
-        dates.add(add_date)
-        i += 1
-
-    context = {
-        'dates' :dates
-    }
-    return render(request,'test.html',context)
    
     
+
+def add_settlement(request):
+    if request.method == "POST":
+        form = claim_settledForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect('list_settlement')
+            except:
+                pass
+    else:
+        form = claim_settledForm()
+    return render(request,'add_settlement.html',{'form':form})
+
+
+
+
+def delete_settlement(request,pk):
+    claims = claim_settled.objects.get(id=pk)
+
+    if request.method =='POST':
+        claims.delete()
+        return redirect('list_settlement')
+
+    context = {
+        'claims':claims,
+    }
+    return render(request,'delete_settlement.html',context)
+
+
+def edit_settlement(request,pk):
+    claim_data = claim_settled.objects.get(id = pk)
+    form = claim_settledForm(instance=claim_data)
+    if request.method == 'POST':
+        form = claim_settledForm(request.POST, instance=claim_data)
+        if form.is_valid():
+            form.save()
+            return redirect('list_settlement')
     
+    context = {
+        'claim_data' :claim_data,
+        'form':form
+    }
+    return render(request,'edit_settlement.html',context)
+
+
+
+def list_settlement(request):
+    claim_settlement = claim_settled.objects.all()
+    return render(request,'list_settlement.html',{'claim_settlement':claim_settlement})
+
+
+def test(request):
+    return render(request,'test.html')
+    
+
+    
+def table_profit(request):
+    account_number_id = request.GET.get('account_number_id')
+    data_filtered = profit_details.objects.filter(account_number_id = account_number_id).order_by('-entry_date')[0:10]
+    return render(request,'table_profit.html',{'data_filtered':data_filtered})
+
+def test_two(request):
+    
+    account_number_id = request.GET.get('account_number_id')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    profit_return =  profit_details.objects.filter(account_number_id = account_number_id).filter(entry_date__range=[start_date,end_date]).aggregate(Sum('profit'))
+
+    final_amount = profit_return['profit__sum']
+    context = {
+        'final_amount':final_amount
+    }
+ 
+    return render(request,'test_two.html',context)

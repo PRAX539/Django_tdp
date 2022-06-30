@@ -26,11 +26,66 @@
     $('#id_start_date').attr("type","date");
     $('#id_end_date').attr("type","date");
 
+    //  need to convert to button function
+    $('#id_end_date').change(function(){
+        var start_date = $('#id_start_date').val();
+        var account_number_id = $('#id_account_number').val();
+        var end_date = $(this).val();
 
-    $('#id_account_number').on('change', function(){
-        alert(this.value);
-        // this will send an ajax function to get commission rate
-    })
+       
+        $.ajax({
+            url: '{% url "test_two" %}',
+            method:"get",
+            data:{
+                'account_number_id':account_number_id,
+                'start_date':start_date,
+                'end_date':end_date,
+                
+            },
+
+            success:function(data){
+                console.log(data);
+                if(data == "None"){
+                    $('#id_total_profit').val(0)
+                }else{
+
+                $('#id_total_profit').val(data)
+                }
+                
+            }
+        });
+ 
+    
+    });
+
+    $('#id_account_number').change(function(){
+        var account_number_id = $(this).val();
+        
+        $.ajax({
+            url :'{% "test_three" %}',
+            method :"get",
+            date:{
+                'account_number_id':account_number_id
+            }, 
+            success:function(data){
+                console.log(data);
+                if(data =="None"){
+                $('#id_commission').val(0);
+            }else{
+                $('#id_commission').val(data);
+            }}
+
+
+        });
+
+
+
+
+    });
+
+
+
+ 
 </script>
 </div>
 {% endblock content %}

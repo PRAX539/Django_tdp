@@ -26,7 +26,15 @@ urlpatterns = [
     path('edit_vps/<int:pk>',views.edit_vps,name = 'edit_vps'),
     path('delete_vps/<int:pk>',views.delete_vps,name = 'delete_vps'),
     path('list_vps',views.list_vps,name = 'list_vps'),
-    path('test',views.test,name ='test'),    
+    path('add_settlement',views.add_settlement,name = 'add_settlement'),
+    path('edit_settlement',views.edit_settlement,name ='edit_settlement'),
+    path('delete_settlement',views.delete_settlement,name = 'delete_settlement'),
+    path('list_settlement',views.list_settlement,name = 'list_settlement'),
+    path('test',views.test,name = 'test'),
+    
+    #ajax path down there
+    path('table_profit',views.table_profit,name ='table_profit'), 
+    path('test_two',views.test_two,name = "test_two")
 
 
 

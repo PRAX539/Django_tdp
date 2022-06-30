@@ -27,3 +27,9 @@ class profit_claimForm(forms.ModelForm):
     class Meta :
         model = profit_claim
         fields = "__all__"
+
+
+class claim_settledForm(forms.ModelForm):
+    class Meta:
+        model = claim_settled
+        fields = "__all__"
