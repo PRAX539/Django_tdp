@@ -1,5 +1,6 @@
 import datetime
 from multiprocessing import context
+from tkinter import FLAT
 from urllib import response
 from django.shortcuts import render,redirect
 from .forms import *
@@ -324,3 +325,12 @@ def test_two(request):
     }
  
     return render(request,'test_two.html',context)
+
+def test_three(request):
+    account_number_id  =request.GET.get('account_number_id')
+    # account_number_id = 3
+    commission = account_master.objects.filter(id = account_number_id).values_list('TDP_share',flat=True).first()
+    context = {
+        'commission' : commission
+   }
+    return render(request,'test_three.html',context)

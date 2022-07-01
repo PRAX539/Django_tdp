@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container mt-3">
-<h2> Claim Profit</h2>
+<h2>  EDIT Claim Profit</h2>
 
 <form method="post">
     {% csrf_token %}
@@ -25,6 +25,111 @@
 
     $('#id_start_date').attr("type","date")
     $('#id_end_date').attr("type","date")
+</script>
+</div>
+{% endblock content %}{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-3">
+<h2> Claim Profit</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit" class = "btn btn-outline-success">
+    <input type="reset" value="Reset" class = "btn btn-outline-info">
+    <a href="{% url 'list_claim' %} " class = "btn btn-outline-warning">Cancel</a>
+
+</form>
+
+
+
+<script>
+      function our_share(){
+        let total_profit = $('#id_total_profit').val();
+        console.log(total_profit);
+        let commission = $('#id_commission_rate').val();
+        console.log(commission);
+        let our_share = (total_profit*commission )/100;
+        
+        console.log(our_share);
+
+        $('#id_our_share').val(our_share);
+    }
+
+    $("input,select,textarea").not(':submit,:reset').each(function(){
+        $(this).addClass("form-control");
+    })
+
+    $('#id_start_date').attr("type","date");
+    $('#id_end_date').attr("type","date");
+
+    //  need to convert to button function
+    $('#id_end_date').change(function(){
+        var start_date = $('#id_start_date').val();
+        var account_number_id = $('#id_account_number').val();
+        var end_date = $(this).val();
+
+       
+        $.ajax({
+            url: '{% url "test_two" %}',
+            method:"get",
+            data:{
+                'account_number_id':account_number_id,
+                'start_date':start_date,
+                'end_date':end_date,
+                
+            },
+
+            success:function(data){
+                
+                if(data == "None"){
+                    $('#id_total_profit').val(0)
+                    our_share();
+                }else{
+
+                $('#id_total_profit').val(data)
+                our_share();
+                }
+                
+            }
+        });
+ 
+    
+    });
+
+    $('#id_account_number').change(function(){
+        var account_number_id = $(this).val();
+        
+        $.ajax({
+            url :'{% url "test_three" %}',
+            method :"get",
+            data:{
+                'account_number_id':account_number_id,
+            }, 
+            success:function(data){
+               
+                if(data =="None"){
+                $('#id_commission_rate').val(0);
+            }else{
+                $('#id_commission_rate').val(data);
+            }}
+
+
+        });
+
+
+
+
+    });
+
+
+  
+
+ 
 </script>
 </div>
 {% endblock content %}

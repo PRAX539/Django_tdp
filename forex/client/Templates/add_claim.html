@@ -19,6 +19,18 @@
 
 
 <script>
+      function our_share(){
+        let total_profit = $('#id_total_profit').val();
+        console.log(total_profit);
+        let commission = $('#id_commission_rate').val();
+        console.log(commission);
+        let our_share = (total_profit*commission )/100;
+        
+        console.log(our_share);
+
+        $('#id_our_share').val(our_share);
+    }
+
     $("input,select,textarea").not(':submit,:reset').each(function(){
         $(this).addClass("form-control");
     })
@@ -44,12 +56,14 @@
             },
 
             success:function(data){
-                console.log(data);
+                
                 if(data == "None"){
                     $('#id_total_profit').val(0)
+                    our_share();
                 }else{
 
                 $('#id_total_profit').val(data)
+                our_share();
                 }
                 
             }
@@ -62,17 +76,17 @@
         var account_number_id = $(this).val();
         
         $.ajax({
-            url :'{% "test_three" %}',
+            url :'{% url "test_three" %}',
             method :"get",
-            date:{
-                'account_number_id':account_number_id
+            data:{
+                'account_number_id':account_number_id,
             }, 
             success:function(data){
-                console.log(data);
+               
                 if(data =="None"){
-                $('#id_commission').val(0);
+                $('#id_commission_rate').val(0);
             }else{
-                $('#id_commission').val(data);
+                $('#id_commission_rate').val(data);
             }}
 
 
@@ -84,6 +98,7 @@
     });
 
 
+  
 
  
 </script>

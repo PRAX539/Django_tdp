@@ -34,7 +34,8 @@ urlpatterns = [
     
     #ajax path down there
     path('table_profit',views.table_profit,name ='table_profit'), 
-    path('test_two',views.test_two,name = "test_two")
+    path('test_two',views.test_two,name = "test_two"),
+    path('test_three',views.test_three,name='test_three'),
 
 
 
