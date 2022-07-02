@@ -30,13 +30,15 @@ urlpatterns = [
     path('edit_settlement',views.edit_settlement,name ='edit_settlement'),
     path('delete_settlement',views.delete_settlement,name = 'delete_settlement'),
     path('list_settlement',views.list_settlement,name = 'list_settlement'),
-    path('test',views.test,name = 'test'),
+    
     
     #ajax path down there
     path('table_profit',views.table_profit,name ='table_profit'), 
     path('test_two',views.test_two,name = "test_two"),
     path('test_three',views.test_three,name='test_three'),
 
+    # Reporting URL 
+    path('report_generator',views.report_generator,name = 'report_generator')
 
 
 ]
