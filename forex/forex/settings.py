@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'client',
+    'crispy_forms',
+   
+
 ]
 
 MIDDLEWARE = [
@@ -61,7 +64,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'forex.wsgi.application'
 
-
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -98,6 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LANGUAGE_CODE = 'en-us'
 

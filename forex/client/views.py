@@ -1,14 +1,13 @@
 import datetime
 from multiprocessing import context
-from tkinter import FLAT
 from urllib import response
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
 from datetime import date, timedelta
 from django.http import HttpResponse, JsonResponse
-import pandas as pd
 from django.db.models import Avg, Count, Min, Sum
+
 
 
 
@@ -301,11 +300,6 @@ def list_settlement(request):
     claim_settlement = claim_settled.objects.all()
     return render(request,'list_settlement.html',{'claim_settlement':claim_settlement})
 
-
-def test(request):
-    return render(request,'test.html')
-    
-
     
 def table_profit(request):
     account_number_id = request.GET.get('account_number_id')
@@ -334,3 +328,22 @@ def test_three(request):
         'commission' : commission
    }
     return render(request,'test_three.html',context)
+
+
+def report_generator(request):
+
+    account_details = account_master.objects.all()
+
+    context = {
+        'account_details': account_details
+    }
+
+
+    return render(request,'reports.html',context)
+
+def reports(request):
+
+    context = {
+        
+    }
+    return render(request,'final_reports.html',context)
