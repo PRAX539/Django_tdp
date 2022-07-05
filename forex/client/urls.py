@@ -38,7 +38,8 @@ urlpatterns = [
     path('test_three',views.test_three,name='test_three'),
 
     # Reporting URL 
-    path('report_generator',views.report_generator,name = 'report_generator')
+    path('report_generator',views.report_generator,name = 'report_generator'),
+    path('report',views.reports,name ='report')
 
 
 ]

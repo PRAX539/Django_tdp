@@ -1,0 +1,74 @@
+    <div class="container mt-5">
+      <div class="report">
+<h3 class = "text-center"> The Darshan Pandya </h3>
+<h6 class  = "text-center"> Your Forex Consultant</h6>
+
+<hr class="br-danger border-2 border-top border-danger">
+
+<table class="table table-bordered">
+{% for client in client_details %}
+<tr>
+  <td>Name of the Client  : <b class = "text-capitalize">{{client.first_name}} {{client.middle_name}} {{client.last_name}}</b></td>
+  <td>Contact Number : {{client.mobile_number}}</td>
+  <td>Email : {{client.email}}</td>
+</tr>
+
+{% endfor %}
+
+{% for account in account_details %}
+
+  <tr> 
+    <td>Account Number &nbsp;:  &nbsp;{{account.account_number}}</td>
+    <td>Broker &nbsp;: &nbsp;{{account.broker}}</td>
+    <td>Meta Trader &nbsp;:&nbsp;{{account.meta_trader}}</td>
+  </tr>
+  <tr>
+    <td> Intial Equity  &nbsp;: &nbsp; {{account.equity}}</td>
+    <td> Backup Equity  &nbsp; : &nbsp; {{account.backup_equity}}</td>
+    <td> Commission  &nbsp; : &nbsp; <label class ="commission" id = "commission">{{account.TDP_share}}</label></td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+<hr class="br-danger border-2 border-top border-danger">
+
+<p class ="text-center"><strong> Account statement from {{format_start_date}}  &nbsp;to &nbsp;  {{ format_end_date}}</strong></p>
+
+<table class = "table table-striped" >
+  <thead>
+    <tr>
+      <th>Sr.no.</th>
+      <th> Date</th>
+      <th>Profit</th>
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+  {% for profit in profits %}
+
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{profit.entry_date}}</td>
+      <td>{{profit.profit}}</td>
+    </tr>
+
+  {% endfor %}
+  <tr>
+    <td colspan="2">TOTAL</td>
+    <td><label class = "final_amount" id = "final_amount">{{final_amount}}</label></td>
+  </tr>
+  <tr>
+    <td colspan="2">Net Earning after Commission</td>
+    <td><b><label class = "net_amount" id = "net_amount"></label></b></td>
+  </tr>  
+</tbody>
+    
+  
+</table>
+
+
+</div>
+</div>
+

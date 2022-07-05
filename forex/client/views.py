@@ -1,5 +1,6 @@
 import datetime
 from multiprocessing import context
+from django.utils.dateparse import parse_date
 from urllib import response
 from django.shortcuts import render,redirect
 from .forms import *
@@ -342,8 +343,26 @@ def report_generator(request):
     return render(request,'reports.html',context)
 
 def reports(request):
+    account_number = request.GET.get('account_number')
+    start_date = request.GET.get('start_date')
+    format_start_date = parse_date(start_date)
+    end_date = request.GET.get('end_date')
+    format_end_date= parse_date(end_date)
+   
+  
+    profits = profit_details.objects.filter(account_number_id = account_number).filter(entry_date__lte = end_date).filter(entry_date__gte = start_date)
+    profit_return =  profit_details.objects.filter(account_number_id = account_number).filter(entry_date__range=[start_date,end_date]).aggregate(Sum('profit'))
+    final_amount = profit_return['profit__sum']
+    account_details = account_master.objects.filter(id = account_number)
 
+    client_id = account_master.objects.filter(id = account_number).values_list('client_id',flat=True).first()
+    client_details = client.objects.filter(id = client_id)
     context = {
-        
+        'account_details':account_details,
+        'format_start_date':format_start_date,
+        'format_end_date':format_end_date,
+        'client_details':client_details,
+        'profits':profits,
+        'final_amount':final_amount,
     }
     return render(request,'final_reports.html',context)
