@@ -30,12 +30,19 @@ urlpatterns = [
     path('edit_settlement',views.edit_settlement,name ='edit_settlement'),
     path('delete_settlement',views.delete_settlement,name = 'delete_settlement'),
     path('list_settlement',views.list_settlement,name = 'list_settlement'),
+    path('add_broker',views.add_broker,name = "add_broker"),
+    path('edit_broker/<int:pk>',views.edit_broker,name = "edit_broker"),
+    path('delete_broker',views.delete_broker,name = "delete_broker"),
+    path('list_broker',views.list_broker,name = "list_broker"),
     
     
     #ajax path down there
     path('table_profit',views.table_profit,name ='table_profit'), 
     path('test_two',views.test_two,name = "test_two"),
     path('test_three',views.test_three,name='test_three'),
+    path('account_name',views.account_name,name = 'account_name'),
+    path('currency_unit',views.currency_unit,name = 'currency_unit'),
+
 
     # Reporting URL 
     path('report_generator',views.report_generator,name = 'report_generator'),

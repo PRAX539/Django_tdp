@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-3">
+
+    <h3>Deleting Broker Data ??</h3>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want ot delete ??
+    </div>
+    <input type="submit" value="Confirm" class = "btn btn-danger">
+    <a href="{% url 'list_broker' %}" class = "btn btn-success"> Cancel</a>
+
+</form>
+
+</div>
+
+
+
+
+{% endblock content %}

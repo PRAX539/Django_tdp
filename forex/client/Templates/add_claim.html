@@ -10,7 +10,7 @@
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="Submit" class = "btn btn-outline-success">
+    <input type="submit" value="Submit" class = "btn btn-outline-success" id  = "submit_button">
     <input type="reset" value="Reset" class = "btn btn-outline-info">
     <a href="{% url 'list_claim' %} " class = "btn btn-outline-warning">Cancel</a>
 
@@ -19,6 +19,10 @@
 
 
 <script>
+
+
+  
+
       function our_share(){
         let total_profit = $('#id_total_profit').val();
         console.log(total_profit);
@@ -34,11 +38,34 @@
     $("input,select,textarea").not(':submit,:reset').each(function(){
         $(this).addClass("form-control");
     })
-
+   
+   
+    
     $('#id_start_date').attr("type","date");
+    $('#id_received_date').attr("type","date");
     $('#id_end_date').attr("type","date");
+    $('<label class = "currency_unit" id = "currency_unit"></label>').insertBefore('#id_exchange_rate');
 
     //  need to convert to button function
+    $('#id_account_number').change(function(){
+        var account_number_id = $(this).val();
+        
+        $.ajax({
+            url :'{% url "currency_unit" %}',
+            method :"get",
+            data:{
+                'account_number_id':account_number_id,
+            }, 
+            success:function(data){
+               
+                $('#currency_unit').html(data);
+                $('#currency_unit').val(data);
+            
+            }
+        });
+    });
+
+
     $('#id_end_date').change(function(){
         var start_date = $('#id_start_date').val();
         var account_number_id = $('#id_account_number').val();
@@ -61,8 +88,7 @@
                     $('#id_total_profit').val(0)
                     our_share();
                 }else{
-
-                $('#id_total_profit').val(data)
+                    $('#id_total_profit').val(data)
                 our_share();
                 }
                 
@@ -96,9 +122,34 @@
 
 
     });
+   ;
 
 
-  
+
+
+
+
+    $('#id_exchange_rate').change(function(){
+        let exchange_rate = $(this).val();
+        let total_profit = $('#id_total_profit').val();
+       
+        let our_share = $('#id_our_share').val();
+
+        let total_profit_in_rupees;
+        let our_share_in_rupees;
+
+        total_profit_in_rupees = total_profit * exchange_rate;
+        console.log(total_profit_in_rupees);
+
+        our_share_in_rupees = our_share * exchange_rate;
+        console.log(our_share_in_rupees);
+        $('#id_total_profit_in_INR').val(total_profit_in_rupees);
+        $('#id_our_share_in_INR').val(our_share_in_rupees);
+
+
+    
+    })
+
 
  
 </script>

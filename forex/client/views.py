@@ -1,13 +1,13 @@
 import datetime
-from multiprocessing import context
+import json
 from django.utils.dateparse import parse_date
-from urllib import response
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
 from datetime import date, timedelta
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg, Count, Min, Sum
+
 
 
 
@@ -160,7 +160,7 @@ def add_profit(request):
         if form.is_valid():
             try:
                 form.save()
-                return redirect ('list_profit')
+                return redirect ('add_profit')
             except:
                 pass
     else:
@@ -232,7 +232,7 @@ def edit_claim(request,pk):
         'claim_data' :claim_data,
         'form':form
     }
-    return render(request,'edit_trading_account.html',context)
+    return render(request,'edit_claim.html',context)
 
 
 def delete_claim(request,pk):
@@ -301,7 +301,61 @@ def list_settlement(request):
     claim_settlement = claim_settled.objects.all()
     return render(request,'list_settlement.html',{'claim_settlement':claim_settlement})
 
+
+
+
+
+def add_broker(request):
+    if request.method == "POST":
+        form = brokerForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect('list_broker')
+            except:
+                pass
+    else:
+        form = brokerForm()
+    return render(request,'add_broker.html',{'form':form})
+
+
+
+
+def edit_broker(request,pk):
+    broker_data = broker.objects.get(id = pk)
+    form = brokerForm(instance=broker_data)
+    if request.method == 'POST':
+        form = brokerForm(request.POST, instance=broker_data)
+        if form.is_valid():
+            form.save()
+            return redirect('list_broker')
     
+    context = {
+        'broker_data' :broker_data,
+        'form':form
+    }
+    return render(request,'edit_settlement.html',context)
+
+
+
+def delete_broker(request,pk):
+    brokers = broker.objects.get(id=pk)
+
+    if request.method =='POST':
+        brokers.delete()
+        return redirect('list_broker')
+
+    context = {
+        'brokers':brokers,
+    }
+    return render(request,'delete_broker.html',context)
+
+def list_broker(request):
+    broker_list = broker.objects.all()
+    return render(request,'list_broker.html',{'broker_list':broker_list})
+
+
+
 def table_profit(request):
     account_number_id = request.GET.get('account_number_id')
     data_filtered = profit_details.objects.filter(account_number_id = account_number_id).order_by('-entry_date')[0:10]
@@ -366,3 +420,28 @@ def reports(request):
         'final_amount':final_amount,
     }
     return render(request,'final_reports.html',context)
+
+
+def account_name(request):
+    account_number_id = request.GET.get('account_number_id')
+    client_id = account_master.objects.filter(id = account_number_id).values_list('client_id',flat=True).first()
+    client_details = client.objects.filter(id = client_id)
+
+    context = {
+        'client_details':client_details
+    }
+
+    return render(request,'account_name.html',context)
+
+def currency_unit(request):
+    account_number_id = request.GET.get('account_number_id')
+    currency_unit = account_master.objects.filter(id = account_number_id).values_list('currency_unit',flat=True).first()
+   
+
+    context = {
+        'currency_unit':currency_unit
+    }
+
+    return render(request,'currency_unit.html',context)
+
+

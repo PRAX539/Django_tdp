@@ -23,6 +23,7 @@ body {
 .active{
   font-weight: bolder;
   font-size: large;
+  color: black;
 }
 .navbar{
   background-color: darkorange;
@@ -48,34 +49,47 @@ a:hover{
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'list_client' %}">Client</a>
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Master's
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'list_client' %}">Client</a></li>
+                <li><a class="dropdown-item"  href="{% url 'list_vps' %}">VPS</a></li>
+                <li><a class="dropdown-item"  href="{% url 'list_broker' %}">Broker</a></li>
+
+
+                
+                <li><a class="dropdown-item" href="{% url 'list_trading_account' %}">Account Master</a></li>
+              </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'list_vps' %}">VPS</a>
+
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Transactions
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'list_profit' %}">Profit </a></li>
+                <li><a class="dropdown-item"  href="{% url 'list_claim' %}">Claims</a></li>
+                <li><a class="dropdown-item"  href="{% url 'list_settlement' %}">Settlement</a></li>
+
+
+                
+              </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'list_trading_account' %}">Account Master</a>
-            </li>
+
+         
           
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'list_profit' %}">Profit </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'list_claim' %}">Claims</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'list_settlement' %}">Settlement</a>
-            </li>
+        
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'report_generator' %}">Report</a>
             </li>
           </ul>
-          <ul class = "navbar-nav me-2 mb-2 mb-md-0">
+          <!-- <ul class = "navbar-nav me-2 mb-2 mb-md-0">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="">Sign Out</a>
             </li>
-          </ul>  
+          </ul>   -->
         </div>
       </div>
     </nav>

@@ -33,3 +33,8 @@ class claim_settledForm(forms.ModelForm):
     class Meta:
         model = claim_settled
         fields = "__all__"
+
+class brokerForm(forms.ModelForm):
+    class Meta :
+        model = broker
+        fields = "__all__"

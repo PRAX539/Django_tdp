@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+<a href="{% url  'add_broker' %}" class = "btn btn-success float-end"> Add New Broker </a>
+<h2>Broker List </h2>
+
+
+<table class = "table table-striped">
+
+    <thead>
+        <tr>
+            <th>Sr.no.</th>
+            <th>Broker</th>
+           
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for broker in broker_list %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{broker.broker_name}}</td>
+            
+            <td>
+                <a href="edit_broker/{{broker.pk}}">Edit </a>
+            </td>
+            
+            <td>
+                <a href="delete_broker/{{broker.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+</div>
+{% endblock content %}

@@ -1,6 +1,7 @@
 from unittest.mock import DEFAULT
 from django.db import models
-from numpy import True_, true_divide
+
+from django.utils.translation import gettext as broker
 
 # Create your models here.
 
@@ -37,21 +38,35 @@ class virtual_private_server(models.Model):
     def __str__(self):
         return self.vps_name
 # trading account is only account master
+class broker(models.Model):
+    broker_name = models.CharField(max_length=100)
+    
+    class Meta:
+        db_table = 'broker'
+
+    def __str__(self):
+        return self.broker_name
+
+
 class account_master(models.Model):
-    account_type  = [
-        ('mt4','mt4'),
-        ('mt5','mt5')
+    meta_trader  = [
+        ('MT4','MT4'),
+        ('MT5','MT5')
     ]
     intial_currency = [
-        ('cent','cent'),
-        ('dollar','dollar')
+        ('USC','USC'),
+        ('USD','USD')
+    ]
+    account_type = [
+        ('Standard Cent','Standard Cent'),
+        ('Standard','Standard')
     ]
 
     client = models.ForeignKey(client,on_delete=models.PROTECT)
-    broker = models.CharField(max_length=25)
+    broker = models.ForeignKey(broker,max_length=100,on_delete=models.PROTECT)
     account_number = models.CharField(max_length=25)
-    meta_trader = models.CharField(max_length=10,choices=account_type)
-    account_type  = models.CharField(max_length=25)
+    meta_trader = models.CharField(max_length=10,choices=meta_trader)
+    account_type  = models.CharField(max_length=50,choices=account_type)
     server_name = models.CharField(max_length=30)
     trading_password = models.CharField(max_length=25)
     investor_password = models.CharField(max_length=25)
@@ -61,19 +76,19 @@ class account_master(models.Model):
     equity = models.FloatField()
     backup_equity = models.FloatField()
     minimun_equity = models.FloatField()
-    TDP_share = models.FloatField()
-    first_referer_name = models.CharField(max_length=50,blank=True,null=True)
-    first_referer_percent = models.FloatField(blank=True,null=True)
-    second_referer_name = models.CharField(max_length=50,blank = True,null = True)
-    second_referer_percent = models.FloatField(blank=True,null = True)
-    third_referer_name = models.CharField(max_length=50,blank=True,null = True)
-    third_referer_percent= models.FloatField(blank=True,null= True)
+    TDP_share   = models.FloatField(verbose_name="TDP Share (%)")
+    first_referer_name = models.CharField(max_length=50,blank=True,null=True,verbose_name="First Referer Name")
+    first_referer_percent = models.FloatField(blank=True,null=True,verbose_name= "First Referer (%)")
+    second_referer_name = models.CharField(max_length=50,blank = True,null = True,verbose_name="Second Referer Name")
+    second_referer_percent = models.FloatField(blank=True,null = True,verbose_name="Second Referer (%)")
+    third_referer_name = models.CharField(max_length=50,blank=True,null = True,verbose_name="Third Referer Name")
+    third_referer_percent= models.FloatField(blank=True,null= True, verbose_name="Third Referer (%)")
 
     class Meta:
         db_table = 'account_master'
 
     def  __str__(self):
-        return self.account_number
+        return self.account_number + ' -  ' + self.client.first_name + ' '+self.client.middle_name + ' ' +self.client.last_name
 
 
 class profit_details(models.Model):
@@ -89,7 +104,11 @@ class profit_details(models.Model):
 
 
 class profit_claim(models.Model):
-    
+    yes_no = [
+        ('Yes','Yes'),
+        ('No','No')
+    ]
+
     account_number = models.ForeignKey(account_master,on_delete=models.PROTECT)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -99,6 +118,9 @@ class profit_claim(models.Model):
     commission_rate = models.FloatField(blank =True, null=True)
     our_share_in_INR = models.FloatField(blank =True, null=True)
     our_share = models.FloatField(blank =True, null=True)
+    claim_details = models.TextField(blank=True, null =True)
+    received = models.CharField(max_length=5,choices=yes_no,default='No')
+    received_date = models.DateField()
 
     class Meta :
         db_table = 'profit_claim'
@@ -123,3 +145,4 @@ class claim_settled(models.Model):
 
     def __str__(self):
         return self.claim_id + '' + self.amount + '' +self.received_date
+

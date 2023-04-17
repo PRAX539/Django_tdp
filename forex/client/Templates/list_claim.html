@@ -18,6 +18,7 @@
             <th>End Date</th>
             <th>Total Profit</th>
             <th>Our Share</th>
+            <th>Received</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -30,6 +31,7 @@
             <td>{{claim.end_date}}</td>
             <td>{{claim.total_profit}}</td>
             <td>{{claim.our_share}}</td>
+            <td>{{claim.received}}</td>
             
             <td>
                 <a href="edit_claim/{{claim.pk}}">Edit </a>
@@ -43,7 +45,11 @@
 
 </table>
 
-
+<script>
+    $(document).ready( function () {
+    $('#claim_table').DataTable();
+} );
+</script>
 
 
 </div>
