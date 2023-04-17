@@ -2,15 +2,64 @@
 
 
 {% block content %}
+<style>
+    .card{
+        width: 3    00px;
+        height: 100px;
+    }
+</style>
 
-<div class="conatiner mt-3">
- Hello , Pratik
+<div class="container mt-5">
+
+<div class="row mt-5">
+    <div class="col-lg-4 col-sm-12 mt-3">
+        <div class="card bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">No. Of Clients : {{client_no}}</h5>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 mt-3">
+        <div class="card bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">No. Of Account : {{account_no}}</h5>
+                
+            </div>
+        </div>
+    </div>
 
 
+    
+
+    <div class="col-lg-4 col-sm-12 mt-3">
+        <div class="card bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Assets Managed : {{assets.equity__sum}}</h5>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 mt-3">
+        <div class="card bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Total Profit : {{total_profit.profit__sum}}</h5>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12 mt-3">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Claim Profit : {{claim_profit.total_profit__sum}}</h5>
+                
+            </div>
+        </div>
+    </div>
 </div>
 
 
-
-
-
+</div>
 {% endblock %}

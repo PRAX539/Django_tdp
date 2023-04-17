@@ -17,8 +17,9 @@
             <th>Start date</th>
             <th>End Date</th>
             <th>Total Profit</th>
-            <th>Our Share</th>
+            
             <th>Received</th>
+            <th>Reports</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -30,9 +31,11 @@
             <td>{{claim.start_date}}</td>
             <td>{{claim.end_date}}</td>
             <td>{{claim.total_profit}}</td>
-            <td>{{claim.our_share}}</td>
-            <td>{{claim.received}}</td>
             
+            <td>{{claim.received}}</td>
+            <td>
+                <a href="claim_reports/{{claim.pk}}">Report</a>
+            </td>
             <td>
                 <a href="edit_claim/{{claim.pk}}">Edit </a>
             </td>

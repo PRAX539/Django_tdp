@@ -5,7 +5,8 @@
 {% block content %}
 
 <div class="container mt-3">
-
+<form action="{% url 'report' %} " method="post">
+    {% csrf_token %}
 <div class="row mt-3">
     <div class="col-sm-12 col-lg-4">
         <label for="">Start Date</label>
@@ -22,7 +23,7 @@
         <select name="account_number" id="account_number" class = "form-select">
             
             {% for account in account_details %}
-                <option value="{{account.pk}}">{{account.account_number}}</option>
+                <option value="{{account.pk}}">{{account.account_number}}{{account.first_name}}</option>
             {% endfor %}
         </select>
     </div>
@@ -31,6 +32,7 @@
        <a href="{% url 'dashboard' %}" class = "btn btn-warning"> Dashboard</a>
        <a href="Javascript:generatePDF()" class ="btn btn-success"> Download PDF</a>
     </div>
+</form>
 </div>
 <hr class="br-danger border-2 border-top border-danger">
 <section class="report_section" id = "report_section"></section>
@@ -53,47 +55,6 @@
     }
 
 
-    function calculate_commission(){
-        var commission = $('#commission').html();
-        var final_amount = $('#final_amount').html();
-        var net_amount ;
-
-        net_amount = final_amount - (final_amount*commission)/100;
-
-        $('#net_amount').val(net_amount);
-        $('#net_amount').html(net_amount);
-        
-    }
-
-
-    $('button').on('click',function(e){
-        var start_date = $('#start_date').val();
-        var account_number = $('#account_number').val();
-        var end_date = $('#end_date').val();
-
-       
-        $.ajax({
-            url: '{% url "report" %}',
-            method:"get",
-            data:{
-                'account_number':account_number,
-                'start_date':start_date,
-                'end_date':end_date,
-                
-            },
-
-            success:function(data){
-                console.log(data);
-                
-                $('#report_section').html(data);
-                calculate_commission();
-                
-                }
-            }
-        );
- 
-    
-    }); 
   
 
 

@@ -21,18 +21,7 @@ class account_masterForm(forms.ModelForm):
 class profit_detailsForm(forms.ModelForm):
     class Meta :
         model = profit_details
-        fields = "__all__"
-
-class profit_claimForm(forms.ModelForm):
-    class Meta :
-        model = profit_claim
-        fields = "__all__"
-
-
-class claim_settledForm(forms.ModelForm):
-    class Meta:
-        model = claim_settled
-        fields = "__all__"
+        fields = ['account_number','entry_date','profit']
 
 class brokerForm(forms.ModelForm):
     class Meta :

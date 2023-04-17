@@ -16,7 +16,24 @@ from django.db.models import Avg, Count, Min, Sum
 
 
 def dashboard(request):
-    return render(request,'dashboard.html')
+
+    client_no = client.objects.count()
+    account_no = account_master.objects.count()
+    assets = account_master.objects.aggregate(Sum('equity'))
+    total_profit = profit_details.objects.aggregate(Sum('profit'))
+   
+
+
+    context = {
+        'client_no' : client_no,
+        'account_no' :account_no,
+        'assets':assets,
+        'total_profit':total_profit,
+      
+    }
+
+
+    return render(request,'dashboard.html',context)
 
 
 
@@ -160,6 +177,7 @@ def add_profit(request):
         if form.is_valid():
             try:
                 form.save()
+                # need to add share calculation
                 return redirect ('add_profit')
             except:
                 pass
@@ -200,107 +218,66 @@ def delete_profit(request,pk):
     return render(request,'delete_client.html',context)
 
 
-def add_claim(request):
-    if request.method =="POST":
-        form = profit_claimForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                return redirect('list_claim')
-            except:
-                pass
-    else:
-        form = profit_claimForm()
-    return render(request,'add_claim.html',{'form':form})
+# def add_claim(request):
+#     if request.method =="POST":
+#         form = profit_claimForm(request.POST)
+#         if form.is_valid():
+#             try:
+#                 form.save()
+#                 return redirect('list_claim')
+#             except:
+#                 pass
+#     else:
+#         form = profit_claimForm()
+#     return render(request,'add_claim.html',{'form':form})
 
 
-def list_claim(request):
-    claim_list = profit_claim.objects.all()
-    return render(request,'list_claim.html',{'claim_list':claim_list})
+# def list_claim(request):
+#     claim_list = profit_claim.objects.all()
+#     return render(request,'list_claim.html',{'claim_list':claim_list})
 
 
-def edit_claim(request,pk):
-    claim_data = profit_claim.objects.get(id = pk)
-    form = profit_claimForm(instance=claim_data)
-    if request.method == 'POST':
-        form = profit_claimForm(request.POST, instance=claim_data)
-        if form.is_valid():
-            form.save()
-            return redirect('list_trading_account')
+# def edit_claim(request,pk):
+#     claim_data = profit_claim.objects.get(id = pk)
+#     form = profit_claimForm(instance=claim_data)
+#     if request.method == 'POST':
+#         form = profit_claimForm(request.POST, instance=claim_data)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('list_claim')
     
-    context = {
-        'claim_data' :claim_data,
-        'form':form
-    }
-    return render(request,'edit_claim.html',context)
+#     context = {
+#         'claim_data' :claim_data,
+#         'form':form
+#     }
+#     return render(request,'edit_claim.html',context)
 
 
-def delete_claim(request,pk):
-    claims = profit_claim.objects.get(id=pk)
+# def delete_claim(request,pk):
+#     claims = profit_claim.objects.get(id=pk)
 
-    if request.method =='POST':
-        claims.delete()
-        return redirect('list_claim')
+#     if request.method =='POST':
+#         claims.delete()
+#         return redirect('list_claim')
 
-    context = {
-        'claims':claims,
-    }
-    return render(request,'delete_client.html',context)
+#     context = {
+#         'claims':claims,
+#     }
+#     return render(request,'delete_client.html',context)
 
 
+# def claim_reports(request,pk):
+#     # will add parameter of pk for directly linking it 
+    
+
+#     claim_filter = profit_claim.objects.filter(id = pk )
    
-    
+   
+#     context = {
+#         'claim_filter':claim_filter
+#     }
 
-def add_settlement(request):
-    if request.method == "POST":
-        form = claim_settledForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                return redirect('list_settlement')
-            except:
-                pass
-    else:
-        form = claim_settledForm()
-    return render(request,'add_settlement.html',{'form':form})
-
-
-
-
-def delete_settlement(request,pk):
-    claims = claim_settled.objects.get(id=pk)
-
-    if request.method =='POST':
-        claims.delete()
-        return redirect('list_settlement')
-
-    context = {
-        'claims':claims,
-    }
-    return render(request,'delete_settlement.html',context)
-
-
-def edit_settlement(request,pk):
-    claim_data = claim_settled.objects.get(id = pk)
-    form = claim_settledForm(instance=claim_data)
-    if request.method == 'POST':
-        form = claim_settledForm(request.POST, instance=claim_data)
-        if form.is_valid():
-            form.save()
-            return redirect('list_settlement')
-    
-    context = {
-        'claim_data' :claim_data,
-        'form':form
-    }
-    return render(request,'edit_settlement.html',context)
-
-
-
-def list_settlement(request):
-    claim_settlement = claim_settled.objects.all()
-    return render(request,'list_settlement.html',{'claim_settlement':claim_settlement})
-
+#     return render(request,'claim_reports.html',context)
 
 
 
@@ -334,7 +311,7 @@ def edit_broker(request,pk):
         'broker_data' :broker_data,
         'form':form
     }
-    return render(request,'edit_settlement.html',context)
+    return render(request,'edit_broker.html',context)
 
 
 
@@ -397,19 +374,22 @@ def report_generator(request):
     return render(request,'reports.html',context)
 
 def reports(request):
-    account_number = request.GET.get('account_number')
-    start_date = request.GET.get('start_date')
+    account_number = request.POST.get('account_number')
+    start_date = request.POST.get('start_date')
     format_start_date = parse_date(start_date)
-    end_date = request.GET.get('end_date')
+    end_date = request.POST.get('end_date')
     format_end_date= parse_date(end_date)
    
   
-    profits = profit_details.objects.filter(account_number_id = account_number).filter(entry_date__lte = end_date).filter(entry_date__gte = start_date)
+    profits = profit_details.objects.filter(account_number_id = account_number).filter(entry_date__range = [start_date,end_date])
     profit_return =  profit_details.objects.filter(account_number_id = account_number).filter(entry_date__range=[start_date,end_date]).aggregate(Sum('profit'))
     final_amount = profit_return['profit__sum']
     account_details = account_master.objects.filter(id = account_number)
 
-    client_id = account_master.objects.filter(id = account_number).values_list('client_id',flat=True).first()
+    if not profits:
+        profits = ""
+    
+    client_id = account_master.objects.filter(id = account_number).values_list('client_name_id',flat=True).first()
     client_details = client.objects.filter(id = client_id)
     context = {
         'account_details':account_details,
@@ -422,9 +402,10 @@ def reports(request):
     return render(request,'final_reports.html',context)
 
 
+
 def account_name(request):
     account_number_id = request.GET.get('account_number_id')
-    client_id = account_master.objects.filter(id = account_number_id).values_list('client_id',flat=True).first()
+    client_id = account_master.objects.filter(id = account_number_id).values_list('client_name_id',flat=True).first()
     client_details = client.objects.filter(id = client_id)
 
     context = {

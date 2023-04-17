@@ -1,4 +1,9 @@
-    <div class="container mt-5">
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+<div id="report_section">
+ 
       <div class="report">
 <h3 class = "text-center"> Grow Consultancy </h3>
 <h6 class  = "text-center"> Manage by TDP_Trader</h6>
@@ -12,7 +17,7 @@
   <td>Contact Number : {{client.mobile_number}}</td>
   <td>Email : {{client.email}}</td>
 </tr>
-
+{% endfor %}
 
 
 {% for account in account_details %}
@@ -20,11 +25,10 @@
   <tr> 
     <td>Account Number &nbsp;:  &nbsp;{{account.account_number}}</td>
     <td>Broker &nbsp;: &nbsp;{{account.broker}}</td>
-    <td>Meta Trader &nbsp;:&nbsp;{{account.meta_trader}}</td>
+    <td>Meta Trader &nbsp;:&nbsp;{{account.mt_type}}</td>
   </tr>
   <tr>
-    <td> Intial Equity  &nbsp;: &nbsp; {{account.equity}}</td>
-    <td> Backup Equity  &nbsp; : &nbsp; {{account.backup_equity}}</td>
+   
     <td> Commission  &nbsp; : &nbsp; <label class ="commission" id = "commission">{{account.TDP_share}}</label></td>
   </tr>
   {% endfor %}
@@ -33,7 +37,7 @@
 
 <hr class="br-danger border-2 border-top border-danger">
 
-<p class ="text-center"><strong> Account statement from {{format_start_date}}  &nbsp;to &nbsp;  {{ format_end_date}}</strong></p>
+<p class ="text-center"><strong> Account statement from {{format_start_date}}  &nbsp;to &nbsp;  {{format_end_date}}</strong></p>
 
 <table class = "table table-striped" >
   <thead>
@@ -59,10 +63,10 @@
     <td colspan="2">TOTAL</td>
     <td><label class = "final_amount" id = "final_amount">{{final_amount}}</label></td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td colspan="2">Net Earning after Commission</td>
     <td><b><label class = "net_amount" id = "net_amount"></label></b></td>
-  </tr>  
+  </tr>   -->
 </tbody>
     
   
@@ -73,3 +77,25 @@
 </div>
 </div>
 
+
+<button class = "btn btn-danger" onclick = "history.back()"> Back</button>
+<a href="Javascript:generatePDF()" class ="btn btn-success"> Download PDF</a>
+<a href="{% url 'dashboard' %}" class = "btn btn-warning"> Dashboard</a>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
+<script>
+    async function generatePDF(){
+        var downloading  = document.getElementById("report_section");
+        var doc  = new jsPDF('1','pt','a4');
+
+        await html2canvas(downloading).then((canvas)=>{
+            doc.addImage(canvas.toDataURL("image/png"),'PNG',5,5,600,400);
+
+        })
+        doc.save("document.pdf");
+    }
+</script>
+
+
+{% endblock %}
